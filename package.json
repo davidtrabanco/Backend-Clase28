@@ -24,7 +24,9 @@
     "normalizr": "^3.6.2",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
-    "socket.io": "^4.4.1"
+    "random": "^3.0.6",
+    "socket.io": "^4.4.1",
+    "yargs": "^17.5.1"
   },
   "devDependencies": {
     "@faker-js/faker": "^6.3.1"

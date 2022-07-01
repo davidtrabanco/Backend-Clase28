@@ -1,11 +1,9 @@
 import config from "./config.js";
 
-//VARIABLES DE ENTORNO
-import dotenv from "dotenv";
-if (process.env.NODE_ENV !== 'production'){
-    dotenv.config();
-}
-
+//Yargs Parametros
+import _yargs from 'yargs';
+import { hideBin } from 'yargs/helpers';
+const yargs = _yargs(hideBin(process.argv))
 
 //creo un servidor Express:
 import express, { application } from "express";
@@ -36,7 +34,7 @@ app.use(session({
         mongoUrl: config.MongoDB.URL + '/Clase26',
         mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true},
     }),
-    secret: process.env.SESSION_SECRET,
+    secret: config.sessionSecret,
     resave: true,
     saveUninitialized: false,
     rolling: true,
@@ -61,7 +59,7 @@ import {router} from "./src/routes/index.js";
 //Middleware para guardar los mensajes de flash
 app.use( (req,res,next)=>{
     console.log(`Access to URL: ${req.url} --> Method: ${req.method}`);
-    res.locals.message = req.flash( 'status');
+    res.locals.message = req.flash('status');
     next();
 })
 app.use("/", router)
@@ -69,6 +67,10 @@ app.use(express.static('./public'));
 
 
 //Inicio Servidor:
-const PORT = process.env.PORT;
+const PORT = yargs.argv._[0] || 8080;
 const activeServer = httpServer.listen(PORT, ()=>console.log(`HTTP Server Up on Port ${activeServer.address().port}`))
 activeServer.on('error', err => console.error(err));
+
+//Inicio otro child process para funciones random
+import {fork} from "child_process";
+const childProcessRandom = fork("mainProcess.js")

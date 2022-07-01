@@ -6,6 +6,9 @@ import {controller} from "./Controller/index.js";
 //Declaro el router Productos:
 export const router = Router();
 
+//Información
+router.get('/info', controller.info)
+
 //Index
 router.get('/', isAuthenticated('next', '/login'))
 
